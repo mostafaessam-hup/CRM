@@ -2,52 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CustomerRequest;
-use App\Models\Customer;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Crm\Customer\Requests\CustomerRequest;
+use Crm\Customer\services\CustomerService;
 
 class CustomerController extends Controller
 {
+    private CustomerService $customerServices;
+
+    public function __construct(CustomerService $customerServices)
+    {
+        $this->customerServices = $customerServices;
+    }
+
     public function index(Request $request)
     {
-        return Customer::all();
+        return $this->customerServices->index($request);
     }
 
     public function show(string $id)
     {
-        return Customer::find($id) ??
-            response()->json(['status' => 'not found'], Response::HTTP_NOT_FOUND);
+        return $this->customerServices->show($id);
     }
 
     public function create(CustomerRequest $request)
     {
-        $customer = new Customer();
-        $customer->name = $request->get('name');
-        $customer->save();
-        return $customer;
+        return $this->customerServices->create($request->name);
     }
 
     public function update(Request $request, $id)
     {
-        $customer = Customer::find($id);
-        if (!$customer) {
-            return response()->json(['status' => 'not found'], Response::HTTP_NOT_FOUND);
-        }
-        $customer->name = $request->get('name');
-        $customer->save();
-        return $customer;
+        return  $this->customerServices->update($request, $id);
     }
 
 
     public function delete(Request $request, $id)
     {
-        $customer = Customer::find($id);
-        if ($customer) {
-            $customer->delete();
-            return response()->json(['status' => 'deleted'], Response::HTTP_OK);
-        } else {
-            return response()->json(['status' => 'customer not found'], Response::HTTP_NOT_FOUND);
-        }
+        return $this->customerServices->delete($request, (int)$id);
     }
 }

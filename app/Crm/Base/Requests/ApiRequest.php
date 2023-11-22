@@ -30,7 +30,7 @@ abstract class ApiRequest extends FormRequest
             $transformedErrors = [];
             foreach ($errors as $field => $message) {
                 $transformedErrors[] = [
-                    $field => $message[0]
+                    $field => $message
                 ];
             }
             throw new HttpResponseException(
