@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Crm\Customer\Requests\CustomerRequest;
 use Crm\Customer\services\CustomerService;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends Controller
 {
@@ -22,7 +23,8 @@ class CustomerController extends Controller
 
     public function show(string $id)
     {
-        return $this->customerServices->show($id);
+         return $this->customerServices->show($id)??
+        response()->json(['status' => 'not found'], Response::HTTP_NOT_FOUND);
     }
 
     public function create(CustomerRequest $request)

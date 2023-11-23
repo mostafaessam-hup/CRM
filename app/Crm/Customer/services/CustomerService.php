@@ -18,8 +18,7 @@ class CustomerService
 
     public function show(string $id)
     {
-        return Customer::find($id) ??
-            response()->json(['status' => 'not found'], Response::HTTP_NOT_FOUND);
+        return Customer::find($id) ;
     }
 
     public function create(string $name)

@@ -8,24 +8,28 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('invoices', function (Blueprint $table) {
-            $table->id();
-            $table->float("total");
-            $table->string("items");
-            $table->boolean("status");
-            $table->integer("customer_id");
+            $table->bigIncrements('id');
+            $table->double('total', 8, 2);
+            $table->string('items');
+            $table->boolean('status');
+            $table->integer('customer_id');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('incoices');
+        Schema::dropIfExists('invoices');
     }
 };

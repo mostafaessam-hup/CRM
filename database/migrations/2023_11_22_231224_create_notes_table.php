@@ -8,21 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('notes', function (Blueprint $table) {
-            $table->id();
-            $table->string("note");
-            $table->integer("customer_id");
+            $table->bigIncrements('id');
+            $table->string('note');
+            $table->integer('customer_id');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('notes');
     }

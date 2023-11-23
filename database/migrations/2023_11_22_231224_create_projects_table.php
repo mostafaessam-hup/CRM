@@ -8,23 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->string("project_name");
-            $table->boolean("status");
-            $table->integer("customer_id");
-            $table->double("project_cost");
+            $table->bigIncrements('id');
+            $table->string('project_name');
+            $table->boolean('status');
+            $table->integer('customer_id');
+            $table->double('project_cost');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('projects');
     }
