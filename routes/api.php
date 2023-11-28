@@ -24,6 +24,7 @@ Route::get('customers/{id}', [CustomerController::class, 'show']);
 Route::patch('customers/{id}', [CustomerController::class, 'update']);
 Route::delete('customers/{id}', [CustomerController::class, 'delete']);
 Route::post('customers', [CustomerController::class, 'create']);
+Route::post('customers/export', [CustomerController::class, 'export']);
 Route::get('customers', [CustomerController::class, 'index']);
 
 Route::get('customers/{customerId}/notes/{id}', [NoteController::class, 'show']);

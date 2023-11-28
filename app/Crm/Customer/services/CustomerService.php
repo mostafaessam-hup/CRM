@@ -2,23 +2,30 @@
 
 namespace Crm\Customer\services;
 
-use Crm\Customer\Events\CustomerCreation;
 use Illuminate\Http\Request;
 use Crm\Customer\Models\Customer;
+use Crm\Customer\Events\CustomerCreation;
 use Crm\Customer\Requests\CustomerRequest;
 use Symfony\Component\HttpFoundation\Response;
+use Crm\Customer\Repositories\CustomerRepository;
 
 class CustomerService
 {
+    private CustomerRepository $customerRepository;
+
+    public function __construct(CustomerRepository $customerRepository)
+    {
+        $this->customerRepository = $customerRepository;
+    }
 
     public function index(Request $request)
     {
-        return Customer::all();
+        return $this->customerRepository->all();
     }
 
     public function show(string $id)
     {
-        return Customer::find($id) ;
+        return $this->customerRepository->find($id);
     }
 
     public function create(string $name)
