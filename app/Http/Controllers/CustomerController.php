@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Crm\Base\ResponseBuilder;
 use Crm\Customer\services\Export\ExportFactory;
 use Illuminate\Http\Request;
 use Crm\Customer\Requests\CustomerRequest;
 use Crm\Customer\services\CustomerExportService;
 use Crm\Customer\services\CustomerService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CustomerController extends Controller
@@ -23,13 +25,28 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        return $this->customerServices->index($request);
+        $customers = $this->customerServices->index($request);
+
+        return responseBuilder()
+            ->setData($customers)
+            ->response();
     }
 
     public function show(string $id)
     {
-        return $this->customerServices->show($id) ??
-            response()->json(['status' => 'not found'], Response::HTTP_NOT_FOUND);
+        $customer =  $this->customerServices->show($id);
+
+        if (!$customer) {
+            return responseBuilder()
+                ->setErrors(['not found'])
+                ->setStatus(ResponseBuilder::STATUS_ERROR)
+                ->setStatusCode(JsonResponse::HTTP_BAD_REQUEST)
+                ->response();
+        }
+
+        return responseBuilder()
+            ->setData($customer)
+            ->response();
     }
 
     public function create(CustomerRequest $request)
